@@ -7,6 +7,7 @@
 #include <string>
 
 #include <Engine/Renderer/OpenGL/OpenGL.hpp>
+#include <Engine/Renderer/Texture/DdsTexture.hpp>
 
 #include <Core/Utils/Color.hpp>
 
@@ -49,7 +50,7 @@ struct TextureParameters {
     size_t width {1};
     /// height of the texture (t dimension)
     size_t height {1};
-    /// width of the texture (p dimension)
+    /// depth of the texture (p dimension)
     size_t depth {1};
     /// Format of the external data
     GLenum format {GL_RGB};
@@ -117,6 +118,17 @@ class RA_ENGINE_API Texture final
      * @note This will become soon the only way to generate an Radium Engine OpenGL texture.
      */
     void initializeGL( bool linearize = false );
+
+    /** @brief Generate the OpenGL representation of the texture from the provided DDS image
+    *
+    * This method use the available image to generate and configure OpenGL
+    * texture.
+    *
+    * Before uploading texels to the GPU, this method will apply RGB space conversion if needed.
+    *
+    * @param image the already loaded dds image
+    */
+    void initializeGLFromDDSImage( const DDS::CDDSImage &image );
 
     /**
      * @brief Bind the texture to enable its use in a shader

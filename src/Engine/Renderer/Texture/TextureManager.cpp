@@ -1,5 +1,6 @@
 #include <Engine/Renderer/Texture/Texture.hpp>
 #include <Engine/Renderer/Texture/TextureManager.hpp>
+#include <Engine/Renderer/Texture/DdsTexture.hpp>
 
 #include <Core/Utils/Log.hpp>
 
@@ -100,6 +101,29 @@ void TextureManager::loadTextureImage( TextureParameters& texParameters ) {
 Texture* TextureManager::loadTexture( const TextureParameters& texParameters, bool linearize ) {
     TextureParameters texparams = texParameters;
     // TODO : allow to keep texels in texture parameters with automatic lifetime management.
+    // dds textures are managed explicetely
+    if ( (texParameters.name.substr(texParameters.name.size()-4) == ".dds") ||
+         (texParameters.name.substr(texParameters.name.size()-4) == ".DDS")
+       ) {
+        LOG( logINFO ) << "TextureManager : loading " << texParameters.name;
+        DDS::CDDSImage image;
+        try
+        {
+            image.load( texparams.name );
+        }
+        catch (std::runtime_error &e)
+        {
+            LOG( logERROR ) << "TextureManager : unable to load " << texParameters.name;
+            LOG( logERROR ) << "\tException : " << e.what();
+            return nullptr;
+        }
+
+        auto ret = new Texture( texparams );
+        ret->initializeGLFromDDSImage( image );
+        image.clear();
+        return ret;
+    }
+    // general texture loading using stb_image
     bool freeTexels = false;
     if ( texparams.texels == nullptr )
     {

@@ -83,6 +83,45 @@ void Texture::initializeGL( bool linearize ) {
     if ( m_isMipMaped ) { m_texture->generateMipmap(); }
 }
 
+
+void Texture::initializeGLFromDDSImage( const DDS::CDDSImage &img ) {
+    if ( m_texture == nullptr )
+    {
+        m_texture = globjects::Texture::create( m_textureParameters.target );
+        GL_CHECK_ERROR;
+    }
+    bind();
+
+    m_textureParameters.internalFormat = img.get_format();
+    m_textureParameters.format = img.get_format();
+    m_textureParameters.width = img.get_width();
+    m_textureParameters.height = img.get_height();
+    m_textureParameters.depth = img.get_depth();
+    switch ( img.get_type() )
+    {
+    case DDS::TextureFlat :
+        // Either 1D or 2D texture
+        if ( img.get_height() == 1 ) {
+            // 1D texture
+            img.upload_texture1D();
+        } else {
+            img.upload_texture2D();
+        }
+        break;
+    case DDS::Texture3D :
+        img.upload_texture3D();
+        break;
+    case DDS::TextureCubemap :
+        img.upload_textureCubemap();
+        break;
+    default:
+        LOG( logERROR ) << "Textures with DDS format " << img.get_type()
+                        << " aren't supported.";
+        return;
+    }
+    updateParameters();
+}
+
 void Texture::bind( int unit ) {
     if ( unit >= 0 ) { m_texture->bindActive( uint( unit ) ); }
     else

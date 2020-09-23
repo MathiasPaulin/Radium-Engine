@@ -38,6 +38,7 @@ set( engine_sources
     Renderer/RenderTechnique/ShaderConfiguration.cpp
     Renderer/RenderTechnique/ShaderProgram.cpp
     Renderer/RenderTechnique/ShaderProgramManager.cpp
+    Renderer/Texture/DdsTexture.cpp
     Renderer/Texture/Texture.cpp
     Renderer/Texture/TextureManager.cpp
     System/GeometrySystem.cpp
@@ -92,6 +93,7 @@ set( engine_headers
     Renderer/RenderTechnique/ShaderConfiguration.hpp
     Renderer/RenderTechnique/ShaderProgram.hpp
     Renderer/RenderTechnique/ShaderProgramManager.hpp
+    Renderer/Texture/DdsTexture.hpp
     Renderer/Texture/Texture.hpp
     Renderer/Texture/TextureManager.hpp
     System/CouplingSystem.hpp

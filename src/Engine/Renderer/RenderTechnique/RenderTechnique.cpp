@@ -44,7 +44,7 @@ void RenderTechnique::setConfiguration( const ShaderConfiguration& newConfig,
     setConfiguration( pass );
 }
 
-const ShaderProgram* RenderTechnique::getShader( Core::Utils::Index pass ) const {
+const ShaderProgram* RenderTechnique::getShaderProgram( Core::Utils::Index pass ) const {
     if ( hasConfiguration( pass ) ) { return m_activePasses[pass].second; }
     return nullptr;
 }

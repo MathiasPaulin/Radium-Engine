@@ -1,0 +1,89 @@
+@startuml
+title Classes for radium rendering\n
+
+abstract class Component {
+- renderObjects[]
+{abstract} initialize()
+}
+
+class RenderParameters {
+- parameterSets
+void bind()
+void addParameter( name, value )
+}
+
+class RenderObject {
+- localTransform
+- displayable
+render(globalParameters, cameraParameters, passId)
+}
+
+class RenderTechnique {
+passes
+}
+
+abstract class Renderer {
+{abstract} buildRenderTechniques()
+{abstract} render( cameraParameters )
+}
+
+class ForwardRenderer {
+globalParameters
+buildRenderTechniques()
+render( cameraParameters )
+}
+
+class Pass{
+parameters
+program
+configuration
+}
+
+class ShaderProgram {
+globject::program
+}
+
+class ShaderConfiguration {
+vertexConfiguration
+geomConfiguration
+tessConfiguration
+fragConfiguration
+}
+
+interface Displayable {
+{abstract} draw()
+}
+
+abstract class Material
+
+enum Stage {
+Vertex
+Tesselation
+Geometrie
+Fragment
+}
+
+namespace glslSource {
+}
+'-----------------------
+
+Renderer "*" o- "*" RenderObject
+ForwardRenderer --> Renderer
+Component "1"  --  "*" RenderObject
+RenderObject "1" o- "*" Displayable
+RenderObject "1" o-- "1" RenderTechnique
+
+RenderObject "1" o-- "n" Material
+Material --> SubShaderBlob : Fragment
+
+ShaderConfiguration -  ShaderProgram
+Pass o- (ShaderConfiguration, ShaderProgram)
+Pass o- RenderParameters
+RenderTechnique "1" o-- "n" Pass
+
+
+RenderParameters <- SubShaderBlob
+SubShaderBlob -- Stage
+SubShaderBlob -- glslSource
+
+@enduml

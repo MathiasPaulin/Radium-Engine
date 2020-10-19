@@ -1,0 +1,37 @@
+@startuml
+
+title Radium rendering sequence\n
+
+ForwardRenderer -> RenderObject ++ : render(globalParameters, cameraParameters, passId)
+    RenderObject --> RenderTechnique ++ : getPass(passId)
+    return pass
+    RenderObject --> Pass : pass.begin()
+        Pass --> ShaderProgram  : program->bind()
+            ShaderProgram --> globject  : use program
+            activate globject #FFBBBB
+            ShaderProgram --> Pass
+            Pass --> RenderParameters  : parameters.bind(  )
+                RenderParameters --> ShaderProgram : setUniform( parameterSets )
+                    ShaderProgram --> globject : set uniforms
+                RenderParameters --> Pass
+            Pass --> RenderObject
+            RenderObject --> RenderObject : computeModelViewMatrices (\n\tcameraParameters, \n\tlocalTransform )
+            RenderObject --> RenderParameters : modelViewMatrices.bind( )
+                RenderParameters --> ShaderProgram : setUniform( parameterSets )
+                    ShaderProgram --> globject : set uniforms
+                RenderParameters --> RenderObject
+            RenderObject --> RenderParameters : globalParameters.bind( )
+                RenderParameters --> ShaderProgram : setUniform( parameterSets )
+                    ShaderProgram --> globject : set uniforms
+                RenderParameters --> RenderObject
+            RenderObject --> Displayable  : displayable->render(shader)
+                Displayable --> VAO : autoAttrib \n(bind/unbind VAO)
+                VAO --> globject : format data/ bind VAO
+                VAO --> Displayable
+                Displayable --> VAO  : draw()
+                VAO --> globject : drawcall
+                VAO --> Displayable
+                deactivate globject
+            Displayable --> RenderObject
+            return
+@enduml

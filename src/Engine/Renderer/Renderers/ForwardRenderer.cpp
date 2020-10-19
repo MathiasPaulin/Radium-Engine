@@ -441,7 +441,7 @@ void ForwardRenderer::uiInternal( const ViewingParameters& renderData ) {
     {
         if ( ro->isVisible() )
         {
-            auto shader = ro->getRenderTechnique()->getShader();
+            auto shader = ro->getRenderTechnique()->getShaderProgram();
 
             // bind data
             shader->bind();

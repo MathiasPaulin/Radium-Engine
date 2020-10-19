@@ -3,7 +3,7 @@
 title Future radium rendering\n
 
 ForwardRenderer -> RenderObject ++ : render(globalParameters, cameraParameters, passId)
-    RenderObject --> RenderTechnique ++ : getShader(passId)
+    RenderObject --> RenderTechnique ++ : getShaderProgram(passId)
         RenderTechnique --> ConfigurationSet ++ : m_activePasses[passId].second
         return shader
     return shader

@@ -244,7 +244,7 @@ void RenderObject::render( const RenderParameters& lightParams,
                            Core::Utils::Index passId ) {
     if ( m_visible )
     {
-        auto shader = getRenderTechnique()->getShader( passId );
+        auto shader = getRenderTechnique()->getShaderProgram( passId );
         if ( !shader ) { return; }
 
         auto paramsProvider = getRenderTechnique()->getParametersProvider( passId );

@@ -114,7 +114,7 @@ class RA_ENGINE_API RenderTechnique final
      * @return  The pass shader program if the pass is configured, nullptr otherwise.
      */
     const ShaderProgram*
-    getShader( Core::Utils::Index pass = DefaultRenderingPasses::LIGHTING_OPAQUE ) const;
+    getShaderProgram( Core::Utils::Index pass = DefaultRenderingPasses::LIGHTING_OPAQUE ) const;
 
     /**
      * Set the shader parameter provider for the given pass.

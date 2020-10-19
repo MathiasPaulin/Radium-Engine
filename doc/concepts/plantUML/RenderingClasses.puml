@@ -6,6 +6,12 @@ abstract class Component {
 {abstract} initialize()
 }
 
+
+abstract class GeometryComponent {
+- renderObjects[]
+{abstract} initialize()
+}
+
 class RenderParameters {
 - parameterSets
 void bind()
@@ -69,11 +75,22 @@ namespace glslSource {
 
 Renderer "*" o- "*" RenderObject
 ForwardRenderer --> Renderer
-Component "1"  --  "*" RenderObject
-RenderObject "1" o- "*" Displayable
+Component "1"  o--  "*" RenderObject
+GeometryComponent -> Component
+GeometryComponent "1" O- "1" Displayable : <ptr>
+'Displayable "*" --o "1" RenderObject
+'Displayable "*" -o "1" GeometryComponent
+RenderObject "1" o- "1" Displayable : <ptr>
 RenderObject "1" o-- "1" RenderTechnique
 
 RenderObject "1" o-- "n" Material
+note right of Material
+De we really need to exhibit
+a specific SubShaderBlob ?
+I think so, as materials are ubiquitous.
+end note
+RenderObject "*" o-- "*" SubShaderBlob
+Component "*" o-- "*" SubShaderBlob
 Material --> SubShaderBlob : Fragment
 
 ShaderConfiguration -  ShaderProgram

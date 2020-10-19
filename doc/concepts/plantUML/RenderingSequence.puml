@@ -2,36 +2,68 @@
 
 title Radium rendering sequence\n
 
+participant ForwardRenderer  order 1
+participant RenderObject  order 2
+participant RenderTechnique  order 3
+participant Pass  order 4
+participant ShaderProgram  order 5
+participant RenderParameters  order 6
+participant Displayable  order 7
+participant VAO  order 8
+participant globject  order 9
+
 ForwardRenderer -> RenderObject ++ : render(globalParameters, cameraParameters, passId)
     RenderObject --> RenderTechnique ++ : getPass(passId)
     return pass
-    RenderObject --> Pass : pass.begin()
+    RenderObject --> Pass ++ : pass.begin()
         Pass --> ShaderProgram  : program->bind()
-            ShaderProgram --> globject  : use program
-            activate globject #FFBBBB
-            ShaderProgram --> Pass
-            Pass --> RenderParameters  : parameters.bind(  )
-                RenderParameters --> ShaderProgram : setUniform( parameterSets )
-                    ShaderProgram --> globject : set uniforms
-                RenderParameters --> Pass
-            Pass --> RenderObject
-            RenderObject --> RenderObject : computeModelViewMatrices (\n\tcameraParameters, \n\tlocalTransform )
-            RenderObject --> RenderParameters : modelViewMatrices.bind( )
-                RenderParameters --> ShaderProgram : setUniform( parameterSets )
-                    ShaderProgram --> globject : set uniforms
-                RenderParameters --> RenderObject
-            RenderObject --> RenderParameters : globalParameters.bind( )
-                RenderParameters --> ShaderProgram : setUniform( parameterSets )
-                    ShaderProgram --> globject : set uniforms
-                RenderParameters --> RenderObject
-            RenderObject --> Displayable  : displayable->render(shader)
-                Displayable --> VAO : autoAttrib \n(bind/unbind VAO)
-                VAO --> globject : format data/ bind VAO
-                VAO --> Displayable
-                Displayable --> VAO  : draw()
-                VAO --> globject : drawcall
-                VAO --> Displayable
-                deactivate globject
-            Displayable --> RenderObject
+        ShaderProgram --> globject  : use program
+    activate globject #FFBBBB
+        note left Pass
+        Only bind the program ?
+        Think about binding the program
+        once for many RenderObjects ?
+        end note
+        Pass --> RenderParameters  ++ : parameters.bind(  )
+            RenderParameters --> ShaderProgram ++ : setUniform( parameterSets )
+            ShaderProgram --> globject : set uniforms
+            note right RenderParameters
+            Set the parameters related to the
+            current renderObject for this pass.
+            end note
             return
+        return
+    Pass --> RenderObject
+
+    RenderObject --> RenderObject : computeModelViewMatrices (\n\tcameraParameters, \n\tlocalTransform )
+    RenderObject --> RenderParameters ++ : modelViewMatrices.bind( )
+        RenderParameters --> ShaderProgram ++ : setUniform( parameterSets )
+        ShaderProgram --> globject : set uniforms
+        note right RenderParameters
+        Set the pass parameters related
+        to the Modeling and viewing matrices.
+        end note
+        return
+     return
+
+    RenderObject --> RenderParameters ++ : globalParameters.bind( )
+        RenderParameters --> ShaderProgram ++ : setUniform( parameterSets )
+            ShaderProgram --> globject : set uniforms
+            note right RenderParameters
+            Set the pass parameters related
+            to the current renderObject
+            end note
+        return
+    return
+
+    RenderObject --> Displayable  ++ : displayable->render(shader)
+        Displayable --> VAO : autoAttrib
+            VAO --> globject :  bind VAO
+        Displayable --> VAO  : draw()
+            VAO --> globject : drawcall
+    return
+    deactivate globject
+return
+return
+
 @enduml

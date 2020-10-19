@@ -1,0 +1,77 @@
+@startuml
+
+title Radium RenderObject creation\n
+
+participant Application order 10
+participant EntityManager order 20
+participant Entity order 30
+participant Component order 35
+participant Displayable order 50
+participant Material order 60
+participant SubShaderBlob order 70
+participant RenderObject order 75
+participant RenderObjectManager order 100
+
+activate Application #Olive
+Application -> CoreGeometry : create()
+Application <- CoreGeometry : mesh
+note over EntityManager #Olive
+Assets can be given by IO::Fileloaders through
+system method handleAssetLoading(...);
+end note
+Application -> CoreAppearance : create()
+Application <- CoreAppearance : appearance
+deactivate Application
+
+Application -> EntityManager : createEntity(name)
+    EntityManager -> Entity : create()
+Application <- EntityManager : entity
+
+
+Application -> Component : create( name, entity, mesh)
+activate Component #OliveDrab
+note left Component #OliveDrab
+Creation and parameterization of
+Engine::Components
+from Core::*** 3D data
+end note
+Component -> Displayable : create( mesh )
+Component -> SubShaderBlob : create( ... )
+note left Component #OliveDrab
+Components may own several default blobs
+end note
+Component <- SubShaderBlob : store( blob )
+
+Application -> SubShaderBlob : create( ... )
+note left Component #OliveDrab
+Application may explicitely add blobs
+end note
+Application <- SubShaderBlob : blob
+
+Application -> Component : store( blob )
+
+Application-> Component : addAppearance()
+Component -> Material : getBlobFromAppearance()
+Material -> SubShaderBlob : create( ... )
+note left Material
+Allow to access Material Library or to
+define dynamically new materials.
+end note
+Material <- SubShaderBlob : store( blob )
+Component <- Material : store( blob )
+deactivate Component
+
+Application -> Component : compile()
+activate Component #DarkKhaki
+note left Component #DarkKhaki
+Could be done at the same time as the
+creation/parameterisation above.
+end note
+Component -> RenderObject : setDisplayable()`
+Component -> RenderObject : create( )
+Component -> RenderObject : setMaterial()
+Component -> RenderObject : fillBlobs()
+Component -> RenderObjectManager : addRenderObject()
+deactivate Component
+
+@enduml

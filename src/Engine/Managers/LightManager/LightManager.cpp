@@ -41,14 +41,9 @@ void LightManager::generateTasks( Core::TaskQueue* /*taskQueue*/,
     // do nothing as this system only manage light related asset loading
 }
 
-void LightManager::handleAssetLoading( Entity* entity, const FileData* filedata ) {
-    std::vector<LightData*> lightData = filedata->getLightData();
-    uint id                           = 0;
-
-    // If thereis some lights already in the manager, just remove from the manager the lights that
-    // belong to the system entity (e.g. the headlight) from the list of managed lights. Beware to
-    // not destroy the headlight component, that do not belong to this system, so that it could be
-    // added again
+void LightManager::removeSystemLights() {
+    // Beware to not destroy the headlight component, that do not belong to this system,
+    // so that it could be added again
     for ( size_t i = 0; i < m_data->size(); )
     {
         auto l = ( *m_data )[i];
@@ -56,6 +51,16 @@ void LightManager::handleAssetLoading( Entity* entity, const FileData* filedata 
         else
         { ++i; }
     }
+}
+
+void LightManager::handleAssetLoading( Entity* entity, const FileData* filedata ) {
+    std::vector<LightData*> lightData = filedata->getLightData();
+    uint id                           = 0;
+
+    // If thereis some lights already in the manager, just remove from the manager the lights that
+    // belong to the system entity (e.g. the headlight) from the list of managed lights.
+    removeSystemLights();
+
 
     for ( const auto& data : lightData )
     {

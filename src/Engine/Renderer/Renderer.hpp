@@ -16,7 +16,6 @@
 namespace Ra {
 
 namespace Engine {
-class Camera;
 class RenderObject;
 class Light;
 class ShaderProgram;

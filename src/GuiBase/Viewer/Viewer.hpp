@@ -28,6 +28,9 @@ class CameraManipulator;
 class GizmoManager;
 class PickingManager;
 } // namespace Gui
+namespace Engine {
+class Camera;
+} // namespace Engine
 } // namespace Ra
 
 namespace Ra {

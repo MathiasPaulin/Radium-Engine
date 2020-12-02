@@ -58,6 +58,9 @@ class RA_ENGINE_API LightManager : public System
     /// Transform loaded file data to usable entities and component in the engine
     void handleAssetLoading( Entity* entity, const Core::Asset::FileData* data ) override;
 
+    /// Remove all system lights from the manager
+    void removeSystemLights();
+
   protected:
     /// Inherited method marked as final to ensure correct memory management
     /// even in child classes (e.g. LightStorage).

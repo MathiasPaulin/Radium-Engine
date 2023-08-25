@@ -1,11 +1,14 @@
 # ----------------------------------------------------
 # This file can be generated from a script:
-# To do so, run "./generateFilelistForModule.sh Headless"
+# To do so, run "./generateFilelistForModule.sh Headless" 
 # from ./scripts directory
 # ----------------------------------------------------
 
-set(headless_sources CLIBaseApplication.cpp CLIViewer.cpp OpenGLContext/EglOpenGLContext.cpp
-                     OpenGLContext/GlfwOpenGLContext.cpp
+set(headless_sources
+    CLIBaseApplication.cpp
+    CLIViewer.cpp
+    OpenGLContext/EglOpenGLContext.cpp
+    OpenGLContext/GlfwOpenGLContext.cpp
 )
 
 set(headless_headers
@@ -31,3 +34,4 @@ set(headless_headers
     OpenGLContext/OpenGLContext.hpp
     RaHeadless.hpp
 )
+

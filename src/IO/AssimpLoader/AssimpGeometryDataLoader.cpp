@@ -237,17 +237,15 @@ void AssimpGeometryDataLoader::loadMaterial( const aiMaterial& material,
             aiColor4D color;
             aiString name;
             if ( AI_SUCCESS == material.Get( AI_MATKEY_COLOR_DIFFUSE, color ) ) {
-                plainMaterial->m_kd = assimpToCore( color );
+                plainMaterial->setDiffuseColor( assimpToCore( color ) );
             }
             if ( AI_SUCCESS ==
                  material.Get( AI_MATKEY_TEXTURE( aiTextureType_DIFFUSE, 0 ), name ) ) {
-                plainMaterial->m_texDiffuse    = m_filepath + "/" + assimpToCore( name );
-                plainMaterial->m_hasTexDiffuse = true;
+                plainMaterial->setTexDiffuse( m_filepath + "/" + assimpToCore( name ) );
             }
             if ( AI_SUCCESS ==
                  material.Get( AI_MATKEY_TEXTURE( aiTextureType_OPACITY, 0 ), name ) ) {
-                plainMaterial->m_texOpacity    = m_filepath + "/" + assimpToCore( name );
-                plainMaterial->m_hasTexOpacity = true;
+                plainMaterial->setTexOpacity( m_filepath + "/" + assimpToCore( name ) );
             }
         } break;
 
@@ -259,28 +257,24 @@ void AssimpGeometryDataLoader::loadMaterial( const aiMaterial& material,
             aiColor4D color;
             aiString name;
             if ( AI_SUCCESS == material.Get( AI_MATKEY_COLOR_DIFFUSE, color ) ) {
-                lambertianMaterial->m_kd = assimpToCore( color );
+                lambertianMaterial->setDiffuseColor( assimpToCore( color ) );
             }
             if ( AI_SUCCESS ==
                  material.Get( AI_MATKEY_TEXTURE( aiTextureType_DIFFUSE, 0 ), name ) ) {
-                lambertianMaterial->m_texDiffuse    = m_filepath + "/" + assimpToCore( name );
-                lambertianMaterial->m_hasTexDiffuse = true;
+                lambertianMaterial->setTexDiffuse( m_filepath + "/" + assimpToCore( name ) );
             }
             if ( AI_SUCCESS ==
                  material.Get( AI_MATKEY_TEXTURE( aiTextureType_OPACITY, 0 ), name ) ) {
-                lambertianMaterial->m_texOpacity    = m_filepath + "/" + assimpToCore( name );
-                lambertianMaterial->m_hasTexOpacity = true;
+                lambertianMaterial->setTexOpacity( m_filepath + "/" + assimpToCore( name ) );
             }
             if ( AI_SUCCESS ==
                  material.Get( AI_MATKEY_TEXTURE( aiTextureType_NORMALS, 0 ), name ) ) {
-                lambertianMaterial->m_texNormal    = m_filepath + "/" + assimpToCore( name );
-                lambertianMaterial->m_hasTexNormal = true;
+                lambertianMaterial->setTexNormal( m_filepath + "/" + assimpToCore( name ) );
             }
             // Assimp loads objs bump maps as height maps, gj bro
             if ( AI_SUCCESS ==
                  material.Get( AI_MATKEY_TEXTURE( aiTextureType_HEIGHT, 0 ), name ) ) {
-                lambertianMaterial->m_texNormal    = m_filepath + "/" + assimpToCore( name );
-                lambertianMaterial->m_hasTexNormal = true;
+                lambertianMaterial->setTexNormal( m_filepath + "/" + assimpToCore( name ) );
             }
         } break;
 
@@ -296,60 +290,54 @@ void AssimpGeometryDataLoader::loadMaterial( const aiMaterial& material,
             aiString name;
 
             if ( AI_SUCCESS == material.Get( AI_MATKEY_COLOR_DIFFUSE, color ) ) {
-                blinnPhongMaterial->m_kd = assimpToCore( color );
+                blinnPhongMaterial->setDiffuseColor( assimpToCore( color ) );
             }
 
             if ( AI_SUCCESS == material.Get( AI_MATKEY_COLOR_SPECULAR, color ) ) {
-                blinnPhongMaterial->m_ks = assimpToCore( color );
+                blinnPhongMaterial->setSpecularColor( assimpToCore( color ) );
             }
 
             if ( AI_SUCCESS == material.Get( AI_MATKEY_SHININESS, shininess ) ) {
                 // Assimp gives the Phong exponent, we use the Blinn-Phong exponent
-                blinnPhongMaterial->m_ns = shininess * 4;
+                blinnPhongMaterial->setShininess( shininess * 4 );
             }
 
             if ( AI_SUCCESS == material.Get( AI_MATKEY_OPACITY, opacity ) ) {
                 // NOTE(charly): Due to collada way of handling objects that have an alpha map, we
                 // must ensure
                 //               we do not have zeros in here.
-                blinnPhongMaterial->m_alpha = opacity < 1e-5 ? 1 : opacity;
+                blinnPhongMaterial->setAlpha( opacity < 1e-5 ? 1 : opacity );
             }
 
             if ( AI_SUCCESS ==
                  material.Get( AI_MATKEY_TEXTURE( aiTextureType_DIFFUSE, 0 ), name ) ) {
-                blinnPhongMaterial->m_texDiffuse    = m_filepath + "/" + assimpToCore( name );
-                blinnPhongMaterial->m_hasTexDiffuse = true;
+                blinnPhongMaterial->setTexDiffuse( m_filepath + "/" + assimpToCore( name ) );
             }
 
             if ( AI_SUCCESS ==
                  material.Get( AI_MATKEY_TEXTURE( aiTextureType_SPECULAR, 0 ), name ) ) {
-                blinnPhongMaterial->m_texSpecular    = m_filepath + "/" + assimpToCore( name );
-                blinnPhongMaterial->m_hasTexSpecular = true;
+                blinnPhongMaterial->setTexSpecular( m_filepath + "/" + assimpToCore( name ) );
             }
 
             if ( AI_SUCCESS ==
                  material.Get( AI_MATKEY_TEXTURE( aiTextureType_SHININESS, 0 ), name ) ) {
-                blinnPhongMaterial->m_texShininess    = m_filepath + "/" + assimpToCore( name );
-                blinnPhongMaterial->m_hasTexShininess = true;
+                blinnPhongMaterial->setTexShininess( m_filepath + "/" + assimpToCore( name ) );
             }
 
             if ( AI_SUCCESS ==
                  material.Get( AI_MATKEY_TEXTURE( aiTextureType_NORMALS, 0 ), name ) ) {
-                blinnPhongMaterial->m_texNormal    = m_filepath + "/" + assimpToCore( name );
-                blinnPhongMaterial->m_hasTexNormal = true;
+                blinnPhongMaterial->setTexNormal( m_filepath + "/" + assimpToCore( name ) );
             }
 
             // Assimp loads objs bump maps as height maps, gj bro
             if ( AI_SUCCESS ==
                  material.Get( AI_MATKEY_TEXTURE( aiTextureType_HEIGHT, 0 ), name ) ) {
-                blinnPhongMaterial->m_texNormal    = m_filepath + "/" + assimpToCore( name );
-                blinnPhongMaterial->m_hasTexNormal = true;
+                blinnPhongMaterial->setTexNormal( m_filepath + "/" + assimpToCore( name ) );
             }
 
             if ( AI_SUCCESS ==
                  material.Get( AI_MATKEY_TEXTURE( aiTextureType_OPACITY, 0 ), name ) ) {
-                blinnPhongMaterial->m_texOpacity    = m_filepath + "/" + assimpToCore( name );
-                blinnPhongMaterial->m_hasTexOpacity = true;
+                blinnPhongMaterial->setTexOpacity( m_filepath + "/" + assimpToCore( name ) );
             }
         }
         }

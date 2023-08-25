@@ -36,6 +36,11 @@ set(core_sources
     Material/BlinnPhongMaterialModel.cpp
     Material/MaterialModel.cpp
     Material/SimpleMaterialModel.cpp
+    Random/BlinnPhongSphereSampler.cpp
+    Random/CosineWeightedSphereSampler.cpp
+    Random/MersenneTwisterGenerator.cpp
+    Random/UniformGenerator.cpp
+    Random/UniformSphereSampler.cpp
     Resources/Resources.cpp
     Tasks/TaskQueue.cpp
     Utils/Attribs.cpp
@@ -110,6 +115,12 @@ set(core_headers
     Math/Math.hpp
     Math/Quadric.hpp
     RaCore.hpp
+    Random/BlinnPhongSphereSampler.hpp
+    Random/CosineWeightedSphereSampler.hpp
+    Random/MersenneTwisterGenerator.hpp
+    Random/SphereSampler.hpp
+    Random/UniformGenerator.hpp
+    Random/UniformSphereSampler.hpp
     Resources/Resources.hpp
     Tasks/Task.hpp
     Tasks/TaskQueue.hpp

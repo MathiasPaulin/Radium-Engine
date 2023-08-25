@@ -1,17 +1,22 @@
 #pragma once
+#include <memory>
+#include <optional>
 #include <string>
 
 #include <Core/RaCore.hpp>
 
 #include <Core/Utils/Observable.hpp>
 
+#include <Core/Types.hpp>
+#include <Core/Utils/Color.hpp>
+
 namespace Ra {
 namespace Core {
 namespace Material {
 
-/** @brief represent material model, loaded by a file loader.
- *
- */
+/// Texture management isn't implemented at all.
+
+/// @brief Interface used for discribing materials, compute bsdf and sample reflectance ray.
 class RA_CORE_API MaterialModel : public Utils::ObservableVoid
 {
   public:
@@ -29,6 +34,32 @@ class RA_CORE_API MaterialModel : public Utils::ObservableVoid
 
     /// DEBUG
     virtual void displayInfo() const;
+
+    /// @brief Compute BSDF value for a set of directions and texture coordinates.
+    /// @param w_i incident direction in world space.
+    /// @param w_o outgoing direction in world space.
+    /// @param normal geometric normal direction in world space.
+    /// @param uv UV coordinates for texture mapping.
+    /// @return The color value of the bsdf.
+    virtual Utils::Color operator()( Vector3 w_i, Vector3 w_o, Vector3 normal, Vector2 uv ) = 0;
+
+    /// @brief Sample reflectance direction for a set of directions.
+    /// @param w_i incident direction in world space.
+    /// @param normal normal to the surface in world space.
+    /// @param tangent tangent to the surface, perpendicular to normal, in world space.
+    /// @param bitangent bitangent to the surface, perpendicular to the normal and the tangent, in
+    /// world space.
+    /// @return optional pair composed of outgoing direction and probability density function value
+    /// associated with the direction.
+    virtual std::optional<std::pair<Vector3, Scalar>>
+    sample( Vector3 w_i, Vector3 normal, Vector3 tangent, Vector3 bitangent ) = 0;
+
+    /// @brief Compute probability density function value associated with a set of directions.
+    /// @param w_i incident direction in world space.
+    /// @param w_o outgoing direction in world space.
+    /// @param normal normal to the surface in world space.
+    /// @return Scalar probability density function value associated with the directions.
+    virtual Scalar pdf( Vector3 w_i, Vector3 w_o, Vector3 normal ) = 0;
 
   private:
     std::string m_materialType;

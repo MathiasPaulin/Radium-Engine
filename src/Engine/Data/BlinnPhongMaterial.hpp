@@ -5,6 +5,7 @@
 #include <map>
 #include <string>
 
+#include <Core/Material/BlinnPhongMaterialModel.hpp>
 #include <Core/Utils/Color.hpp>
 #include <Engine/Data/Material.hpp>
 #include <Engine/Data/Texture.hpp>
@@ -89,6 +90,8 @@ class RA_ENGINE_API BlinnPhongMaterial final : public Material, public Parameter
 
     inline bool isColoredByVertexAttrib() const override;
 
+    inline Core::Material::BlinnPhongMaterialModel* getCoreMaterial() { return m_coreMaterial; }
+
   public:
     Core::Utils::Color m_kd { 0.7, 0.7, 0.7, 1.0 };
     Core::Utils::Color m_ks { 0.3, 0.3, 0.3, 1.0 };
@@ -110,6 +113,7 @@ class RA_ENGINE_API BlinnPhongMaterial final : public Material, public Parameter
     std::map<TextureSemantic, Texture*> m_textures;
     std::map<TextureSemantic, TextureParameters> m_pendingTextures;
     static nlohmann::json s_parametersMetadata;
+    Core::Material::BlinnPhongMaterialModel* m_coreMaterial;
 
     /**
      * Add an new texture, from a given file, to control the specified BSDF parameter.

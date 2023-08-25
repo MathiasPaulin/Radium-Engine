@@ -23,6 +23,7 @@ foreach(
     MaterialEdition
     ParameterEdition
     Picking
+    PlotImportanceSampler
     RawShaderMaterial
     SimpleAnimation
     SimpleSimulation

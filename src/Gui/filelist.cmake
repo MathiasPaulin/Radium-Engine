@@ -1,6 +1,6 @@
 # ----------------------------------------------------
 # This file can be generated from a script:
-# To do so, run "./generateFilelistForModule.sh Gui"
+# To do so, run "./generateFilelistForModule.sh Gui" 
 # from ./scripts directory
 # ----------------------------------------------------
 
@@ -87,10 +87,16 @@ set(gui_headers
 )
 
 set(gui_uis
-    AboutDialog/AboutDialog.ui AboutDialog/RadiumHelpDialog.ui
-    SkeletonBasedAnimation/SkeletonBasedAnimationUI.ui Timeline/HelpDialog.ui Timeline/Timeline.ui
+    AboutDialog/AboutDialog.ui
+    AboutDialog/RadiumHelpDialog.ui
+    SkeletonBasedAnimation/SkeletonBasedAnimationUI.ui
+    Timeline/HelpDialog.ui
+    Timeline/Timeline.ui
 )
 
-set(gui_resources QtResources/RadiumQtResources.qrc
-                  SkeletonBasedAnimation/SkeletonBasedAnimation.qrc Timeline/timeline.qrc
+set(gui_resources
+    QtResources/RadiumQtResources.qrc
+    SkeletonBasedAnimation/SkeletonBasedAnimation.qrc
+    Timeline/timeline.qrc
 )
+

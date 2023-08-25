@@ -1,6 +1,6 @@
 # ----------------------------------------------------
 # This file can be generated from a script:
-# To do so, run "./generateFilelistForModule.sh Engine"
+# To do so, run "./generateFilelistForModule.sh Engine" 
 # from ./scripts directory
 # ----------------------------------------------------
 
@@ -115,6 +115,7 @@ set(engine_headers
     Scene/System.hpp
     Scene/SystemDisplay.hpp
 )
+
 
 set(engine_shaders
     2DShaders/Basic2D.vert.glsl

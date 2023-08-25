@@ -81,13 +81,13 @@ Material* PlainMaterialConverter::operator()( const Ra::Core::Material::Material
     // static cst is safe here
     auto source = static_cast<const Ra::Core::Material::SimpleMaterialModel*>( toconvert );
 
-    result->m_color = source->m_kd;
-    result->m_alpha = source->m_alpha;
+    result->m_color = source->getDiffuseColor();
+    result->m_alpha = source->getAlpha();
 
     if ( source->hasDiffuseTexture() )
-        result->addTexture( SimpleMaterial::TextureSemantic::TEX_COLOR, source->m_texDiffuse );
+        result->addTexture( SimpleMaterial::TextureSemantic::TEX_COLOR, source->getTexDiffuse() );
     if ( source->hasOpacityTexture() )
-        result->addTexture( SimpleMaterial::TextureSemantic::TEX_MASK, source->m_texOpacity );
+        result->addTexture( SimpleMaterial::TextureSemantic::TEX_MASK, source->getTexOpacity() );
 
     return result;
 }
